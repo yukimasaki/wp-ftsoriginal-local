@@ -4,7 +4,7 @@
 !/html/wp-content/themes/
 /html/wp-content/themes/*
 # Set to the same value as `WORDPRESS_THEME_NAME` in the `.env` file.
-!/html/wp-content/themes/MY_ORIGINAL_THEME
+!/html/wp-content/themes/fts_original
 
 logs/
 *.log
