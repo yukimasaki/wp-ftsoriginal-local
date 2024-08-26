@@ -1,0 +1,60 @@
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    tty: true
+    volumes:
+      - ./node:/usr/src/app
+      - shared_css:/usr/src/app/dist/assets/style
+    ports:
+      - 10030:3000
+    depends_on:
+      - wordpress-db
+
+  wordpress-db:
+    image: mysql:9.0.1
+    container_name: wordpress-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD # rootユーザのパスワード
+      MYSQL_DATABASE: $MYSQL_DATABASE # WordPress用データベース名
+      MYSQL_USER: $MYSQL_USER # WordPress用データベース接続ユーザ名
+      MYSQL_PASSWORD: $MYSQL_PASSWORD # WordPress用データベース接続パスワード
+    volumes:
+      - wordpress-db:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  wordpress-app:
+    image: wordpress:6.6.1-php8.3-apache
+    container_name: wordpress-app
+    restart: always
+    depends_on:
+      - wordpress-db
+    ports:
+      - 10081:80
+    environment:
+      WORDPRESS_DB_HOST: wordpress-db:3306 # データベースサーバ名：ポート番号
+      WORDPRESS_DB_USER: $MYSQL_USER # WordPress用データベース接続ユーザ名(dbの内容に合わせる)
+      WORDPRESS_DB_PASSWORD: $MYSQL_PASSWORD # WordPress用データベース接続パスワード(dbの内容に合わせる)
+      WORDPRESS_DB_NAME: $MYSQL_DATABASE # WordPress用データベース名(dbの内容に合わせる)
+      WORDPRESS_DEBUG: 0 # デバッグモードOFF
+    volumes:
+      - ./html:/var/www/html
+      - shared_css:/var/www/html/wp-content/themes/$WORDPRESS_THEME_NAME/css
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - wordpress-db
+    ports:
+      - 10082:80
+    environment:
+      PMA_HOSTS: wordpress-db
+
+volumes:
+  wordpress-db:
+  shared_css:

@@ -1,0 +1,13 @@
+/html/*
+!/html/wp-content/
+/html/wp-content/*
+!/html/wp-content/themes/
+/html/wp-content/themes/*
+# Set to the same value as `WORDPRESS_THEME_NAME` in the `.env` file.
+!/html/wp-content/themes/MY_ORIGINAL_THEME
+
+logs/
+*.log
+.env
+node_modules/
+dist/
