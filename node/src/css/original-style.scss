@@ -1,0 +1,530 @@
+/* フォント */
+/* Exo 2, Roboto, Noto Sans Japanese */
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+.__font_exo2 {
+  font-family: "Exo 2", sans-serif;
+}
+
+body {
+  font-family: "Roboto", "Noto Sans JP", "Yu Gothic", "MS PGothic", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+/* スクロールバー */
+* {
+  /* スクロールバーの太さと背景色 */
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-corner {
+    width: 8px;
+    height: 8px;
+    background: transparent;
+  }
+
+  /* 矢印ボタンのスペースを削除 */
+  &::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+
+  /* ハンドルの最小の長さ、色、角丸半径 */
+  &::-webkit-scrollbar-thumb {
+    min-width: 48px;
+    min-height: 48px;
+    background: lightgray;
+    border-radius: 4px;
+  }
+}
+
+/* アニメーション */
+.__anime_mainVisual::before {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  animation-name: fadeOut;
+  animation-delay: 4.5s;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  transition: transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.6s;
+  content: "";
+}
+
+@keyframes fadeOut {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(0, -100%);
+    display: none;
+  }
+}
+
+.__anime___catchCopyGroup {
+  animation-name: fontWhiteToBlack;
+  animation-delay: 1.5s;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  position: absolute;
+  z-index: 900;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-wrap: nowrap;
+}
+
+@keyframes fontWhiteToBlack {
+  from {
+    color: white;
+  }
+  to {
+    color: black;
+  }
+}
+
+.__anime_fadeRightToLeft {
+  animation-name: fadeRightToLeft;
+  animation-delay: 4.5s;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeRightToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(160px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* コンテンツ */
+.__containerAll {
+  display: grid;
+  grid-template-columns: minmax(1rem, 1fr) repeat(4, minmax(50px, 400px)) minmax(
+      1rem,
+      1fr
+    );
+  background-color: white;
+}
+
+.__navigation {
+  display: grid;
+  grid-template-columns: inherit;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  grid-column: 1 / -1;
+  padding: 1rem 0;
+  width: 100%;
+  background-color: rgb(243, 244, 246);
+
+  @media (width < 1024px) {
+    display: none;
+  }
+
+  & ul {
+    grid-column: 2 / 6;
+    display: flex;
+    gap: 1.75rem;
+    align-items: center;
+
+    & li {
+      list-style: none;
+    }
+  }
+}
+
+.__navigation.__open {
+  display: block;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  background-color: white;
+
+  & ul {
+    flex-direction: column;
+    padding: 2rem 1rem;
+  }
+}
+
+.__hamburgerIcon {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1100;
+  filter: invert(100%);
+  mix-blend-mode: difference;
+
+  @media (width >= 1024px) {
+    display: none;
+  }
+
+  & span {
+    width: 20px;
+    height: 2px;
+    background-color: black;
+    transition: all 0.4s;
+  }
+}
+
+.__hamburgerIcon.__open {
+  & span:nth-child(1) {
+    transform-origin: center;
+    transform: translateY(5px) rotate(45deg);
+  }
+
+  & span:nth-child(2) {
+    opacity: 0;
+  }
+
+  & span:nth-child(3) {
+    transform-origin: center;
+    transform: translateY(-5px) rotate(-45deg);
+  }
+}
+
+.__hero {
+  grid-column: 1 / -1;
+  height: 100svh;
+  background-color: rgb(243, 244, 246);
+
+  & .__catchCopyGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: fit-content;
+    height: 100%;
+    justify-content: center;
+    color: white;
+
+    & .__companyNameGroup {
+      display: flex;
+      flex-direction: column;
+
+      & .__companyNameEnglish {
+        font-size: 12rem;
+        font-weight: 600;
+
+        @media (width < 1024px) {
+          font-size: 8rem;
+        }
+
+        @media (width < 500px) {
+          font-size: 4rem;
+        }
+      }
+
+      & .__companyNameJapanese {
+        font-size: 2rem;
+        font-weight: 600;
+        align-self: end;
+
+        @media (width < 1024px) {
+          font-size: 1.4rem;
+        }
+
+        @media (width < 500px) {
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    & .__companyCatchCopy {
+      font-size: 4rem;
+      align-self: center;
+
+      @media (width < 1024px) {
+        font-size: 2rem;
+      }
+
+      @media (width < 500px) {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}
+
+.__containerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  grid-column: 1 / 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(0, -100%);
+  z-index: 900;
+  padding-bottom: 1rem;
+
+  & .__infoItems > a dl {
+    display: flex;
+    gap: 1rem;
+    width: fit-content;
+    background-color: white;
+    padding: 0.5rem 1rem;
+    align-items: center;
+
+    @media (width < 500px) {
+      flex-direction: column;
+    }
+  }
+}
+
+.__subContainer {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+
+  @media (width < 1024px) {
+    grid-template-columns: 1rem 1fr 1rem;
+  }
+
+  & .__sectionCompany {
+    background-color: rgb(243, 244, 246);
+  }
+
+  & section {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    padding: 4rem 0;
+
+    @media (width < 1024px) {
+      padding-bottom: 4rem;
+    }
+
+    & img {
+      grid-column: 2 / 4;
+      width: 100%;
+
+      @media (width < 1024px) {
+        grid-column: 2;
+      }
+    }
+
+    & > div {
+      grid-column: 4 / 6;
+      padding: 0 2rem;
+
+      @media (width < 1024px) {
+        grid-column: 2;
+        padding: 0;
+      }
+
+      & .__title {
+        font-size: 6rem;
+        font-weight: 500;
+        padding-bottom: 1rem;
+
+        @media (width < 1024px) {
+          font-size: 4rem;
+          padding-bottom: 0;
+        }
+      }
+
+      & .__description {
+        padding-bottom: 2rem;
+
+        @media (width < 1024px) {
+          padding-bottom: 1rem;
+        }
+      }
+
+      & .__link {
+        width: fit-content;
+
+        & a {
+          display: flex;
+          gap: 1rem;
+          justify-content: start;
+          align-items: center;
+          font-size: 0.9rem;
+
+          & .__linkIcon {
+            display: flex;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgb(184, 184, 184);
+            justify-content: center;
+            align-items: center;
+
+            & svg path {
+              fill: rgb(184, 184, 184);
+            }
+          }
+
+          & .__linkLabel {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+}
+
+footer {
+  grid-column: 1 / -1;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 1.5rem 0;
+
+  @media (width < 500px) {
+    padding: 1rem;
+  }
+
+  & * {
+    color: white;
+  }
+
+  & > .__containerUpper {
+    display: flex;
+    border-bottom: 1px solid rgb(55, 65, 81);
+    padding-bottom: 1rem;
+    gap: 2rem;
+
+    @media (width < 500px) {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    & div:nth-child(2) {
+      margin-left: 5rem;
+
+      @media (width < 500px) {
+        margin-left: 0;
+      }
+    }
+
+    & div {
+      display: flex;
+      flex-direction: column;
+
+      & > .__companyNameEnglish {
+        font-size: 2.75em;
+      }
+
+      & .__category {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  & .__copyright {
+    padding-top: 0.5rem;
+  }
+}
+
+/* 固定ページ */
+.__pageHero {
+  height: 30svh;
+  grid-column: 1 / -1;
+  align-content: center;
+  background-color: black;
+  display: grid;
+  grid-template-columns: subgrid;
+
+  @media (width < 1024px) {
+    height: 20svh;
+  }
+
+  & div {
+    grid-column: 2 / 6;
+    font-size: 3rem;
+    color: white;
+    padding-top: 4rem;
+
+    @media (width < 1024px) {
+      padding-top: 2rem;
+    }
+  }
+}
+
+.__pageContent {
+  grid-column: 1 / -1;
+  padding-top: 2rem;
+  min-height: 100svh;
+
+  display: grid;
+  grid-template-columns: subgrid;
+
+  & > .wp-block-group {
+    grid-column: 3 / 6;
+
+    @media (width < 1024px) {
+      grid-column: 2 / 6;
+    }
+  }
+}
+
+/* Table Of Contents */
+#ez-toc-container {
+  grid-column: 2;
+  position: relative;
+
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+
+  @media (width < 1024px) {
+    display: none;
+  }
+
+  & .ez-toc-title-container {
+    display: none;
+  }
+
+  & .ez-toc-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    & .ez-toc-link {
+      font-size: 1.25rem;
+      color: black;
+    }
+  }
+
+  & > nav {
+    position: fixed;
+  }
+}
+
+/* WordPress ブロック */
+.wp-block-heading {
+  font-size: 2rem;
+  font-weight: 600;
+  padding-bottom: 1rem;
+}
+
+.wp-block-group__inner-container {
+  padding-bottom: 3rem;
+}
+
+p {
+  padding-bottom: 1rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
