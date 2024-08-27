@@ -1,4 +1,4 @@
-const toggleMenu = () => {
+export const toggleMenu = () => {
   const navigation = document.querySelector(".__navigation");
   navigation?.classList.toggle("__open");
 

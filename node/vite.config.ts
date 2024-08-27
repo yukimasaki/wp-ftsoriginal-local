@@ -29,8 +29,10 @@ export default ({ mode }) => {
     root,
     base: "./",
     build: {
+      minify: false,
       outDir: resolve(__dirname, "dist/assets/"),
       rollupOptions: {
+        treeshake: false,
         input: inputsForWordPress,
         output: {
           entryFileNames: "js/[name].js",
