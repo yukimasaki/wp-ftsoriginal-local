@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build --mode wp",
+    "build": "vite build --emptyOutDir",
     "preview": "vite preview",
     "format": "yarn run _typecheck && yarn run _lint-fix && yarn run _prettier-fix",
     "_typecheck": "yarn run tsc --noEmit ",
