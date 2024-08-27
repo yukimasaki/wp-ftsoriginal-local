@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import { resolve, relative, extname } from "path";
 import { globSync } from "glob";
 import { fileURLToPath } from "node:url";
@@ -31,29 +31,38 @@ const inputsForStatic = {
   ),
 };
 
-export default defineConfig(({ mode }) => ({
-  root,
-  base: "./",
-  server: {
-    port: 5173,
-    origin: mode == "wp" ? undefined : "http://localhost:5173",
-  },
-  build: {
-    outDir:
-      mode === "wp" ? resolve(__dirname, "dist") : resolve(__dirname, "dist"),
-    rollupOptions: {
-      input: mode === "wp" ? inputsForWordPress : inputsForStatic,
-      output: {
-        entryFileNames: "assets/js/[name].js",
-        chunkFileNames: "assets/js/[name].js",
-        assetFileNames: (assetsInfo) => {
-          if (assetsInfo.name === "style.css") {
-            return "assets/style/[name].[ext]";
-          } else {
-            return "assets/[name].[ext]";
-          }
+export default ({ mode }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+
+  return defineConfig({
+    root,
+    base: "./",
+    server: {
+      port: 5173,
+      origin: mode == "wp" ? undefined : "http://localhost:5173",
+    },
+    build: {
+      outDir:
+        mode === "wp"
+          ? resolve(
+              __dirname,
+              `../html/wp-content/themes/${process.env.VITE_WORDPRESS_THEME_NAME}`
+            )
+          : resolve(__dirname, "dist"),
+      rollupOptions: {
+        input: mode === "wp" ? inputsForWordPress : inputsForStatic,
+        output: {
+          entryFileNames: "assets/js/[name].js",
+          chunkFileNames: "assets/js/[name].js",
+          assetFileNames: (assetsInfo) => {
+            if (assetsInfo.name === "style.css") {
+              return "assets/style/[name].[ext]";
+            } else {
+              return "assets/[name].[ext]";
+            }
+          },
         },
       },
     },
-  },
-}));
+  });
+};
