@@ -7,25 +7,16 @@ const root = resolve(__dirname, "src");
 
 // WordPress用ビルドのinput設定。WordPress用にはhtmlファイルは不要なため、scssとtsのみをビルド対象にする
 const inputsForWordPress = {
-  style: resolve(root, "/assets/style/style.scss"),
   // 動的にファイルを取得する @see https://rollupjs.org/configuration-options/#input
   ...Object.fromEntries(
-    globSync("src/assets/js/*.ts").map((file) => [
-      relative(
-        "src/assets/js",
-        file.slice(0, file.length - extname(file).length)
-      ),
+    globSync("src/css/*.scss").map((file) => [
+      relative("src/css", file.slice(0, file.length - extname(file).length)),
       fileURLToPath(new URL(file, import.meta.url)),
     ])
   ),
-};
-
-// 静的開発用のinput設定。静的資材用にはhtmlファイルを経由してscss,tsなどをビルドする
-const inputsForStatic = {
-  style: resolve(root, "/assets/style/style.scss"),
   ...Object.fromEntries(
-    globSync("src/**/*.html").map((file) => [
-      relative("src", file.slice(0, file.length - extname(file).length)),
+    globSync("src/js/*.ts").map((file) => [
+      relative("src/js", file.slice(0, file.length - extname(file).length)),
       fileURLToPath(new URL(file, import.meta.url)),
     ])
   ),
@@ -37,28 +28,18 @@ export default ({ mode }) => {
   return defineConfig({
     root,
     base: "./",
-    server: {
-      port: 5173,
-      origin: mode == "wp" ? undefined : "http://localhost:5173",
-    },
     build: {
-      outDir:
-        mode === "wp"
-          ? resolve(
-              __dirname,
-              `../html/wp-content/themes/${process.env.VITE_WORDPRESS_THEME_NAME}`
-            )
-          : resolve(__dirname, "dist"),
+      outDir: resolve(__dirname, "dist/assets/"),
       rollupOptions: {
-        input: mode === "wp" ? inputsForWordPress : inputsForStatic,
+        input: inputsForWordPress,
         output: {
-          entryFileNames: "assets/js/[name].js",
-          chunkFileNames: "assets/js/[name].js",
+          entryFileNames: "js/[name].js",
+          chunkFileNames: "js/[name].js",
           assetFileNames: (assetsInfo) => {
-            if (assetsInfo.name === "style.css") {
-              return "assets/style/[name].[ext]";
+            if (assetsInfo.name?.endsWith(".css")) {
+              return "css/[name].[ext]";
             } else {
-              return "assets/[name].[ext]";
+              return "js/[name].[ext]";
             }
           },
         },
